@@ -1,1 +1,44 @@
-
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.calculadora.horas" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Calculadora Horas</name>
+    <description>Calculadora de horas de trabajo</description>
+    <author email="tu@email.com" href="https://github.com">
+        Tu Nombre
+    </author>
+    
+    <!-- Página de inicio -->
+    <content src="index.html" />
+    
+    <!-- Permisos de navegación -->
+    <access origin="*" />
+    <allow-navigation href="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    
+    <!-- Preferencias IMPORTANTES -->
+    <preference name="Orientation" value="default" />
+    <preference name="Fullscreen" value="false" />
+    <preference name="BackgroundColor" value="0xFF0d1117" />
+    <preference name="AutoHideSplashScreen" value="true" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
+    <preference name="SplashScreenDelay" value="0" />
+    <preference name="AndroidLaunchMode" value="singleTop" />
+    <preference name="loadUrlTimeoutValue" value="60000" />
+    <preference name="load-url-timeout" value="60000" />
+    
+    <!-- Configuración Android -->
+    <platform name="android">
+        <allow-intent href="market:*" />
+        <preference name="android-minSdkVersion" value="22" />
+        <preference name="android-targetSdkVersion" value="33" />
+    </platform>
+    
+    <platform name="ios">
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+    </platform>
+</widget>
