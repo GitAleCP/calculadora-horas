@@ -27,21 +27,21 @@ jobs:
     - name: Instalar Cordova
       run: npm install -g cordova
       
+    - name: Instalar Android SDK 34
+      run: |
+        echo "y" | sudo sdkmanager "platforms;android-34"
+        echo "y" | sudo sdkmanager "build-tools;34.0.0"
+        
     - name: Crear proyecto Cordova
       run: |
         cordova create myapp com.calculadora.horas "Calculadora Horas"
         
     - name: Copiar archivos a www
       run: |
-        # Limpiar www
         rm -rf myapp/www/*
-        
-        # Copiar archivos
         cp -v index.html myapp/www/
         cp -v styles.css myapp/www/
         cp -v app.js myapp/www/
-        
-        # Verificar
         echo "=== Archivos en www ==="
         ls -la myapp/www/
         
@@ -49,7 +49,6 @@ jobs:
       run: |
         cp -v config.xml myapp/
         echo "=== config.xml copiado ==="
-        cat myapp/config.xml
         
     - name: Agregar plataforma Android
       run: |
@@ -60,11 +59,6 @@ jobs:
       run: |
         cd myapp
         cordova prepare android
-        
-    - name: Instalar dependencias
-      run: |
-        cd myapp
-        npm install
         
     - name: Compilar APK Debug
       run: |
