@@ -27,7 +27,7 @@ jobs:
     - name: Instalar Cordova
       run: npm install -g cordova
       
-    - name: Instalar Android SDK 34 y Build Tools 36
+    - name: Instalar Android SDK y Build Tools
       run: |
         # Instalar sdkmanager
         mkdir -p $ANDROID_HOME/cmdline-tools
@@ -37,9 +37,18 @@ jobs:
         mv cmdline-tools latest
         rm commandlinetools-linux-11076708_latest.zip
         
-        # Aceptar licencias e instalar SDK 34 + Build Tools 36
+        # Aceptar licencias
         yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
-        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;36.0.0" "platform-tools"
+        
+        # ✅ Instalar SDK 34 y Build Tools 36
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
+          "platforms;android-34" \
+          "build-tools;36.0.0" \
+          "platform-tools"
+        
+        # Verificar instalación
+        echo "=== SDK Instalado ==="
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --list | grep -E "(android-34|build-tools;36)"
         
     - name: Crear proyecto Cordova
       run: |
@@ -58,6 +67,7 @@ jobs:
       run: |
         cp -v config.xml myapp/
         echo "=== config.xml copiado ==="
+        cat myapp/config.xml | grep -E "(compileSdk|targetSdk|buildTools)"
         
     - name: Agregar plataforma Android
       run: |
@@ -68,6 +78,13 @@ jobs:
       run: |
         cd myapp
         cordova prepare android
+        
+    - name: Verificar configuración antes de compilar
+      run: |
+        cd myapp
+        echo "=== Verificando build.gradle ==="
+        grep -E "(compileSdk|targetSdk|buildTools)" platforms/android/app/build.gradle || true
+        grep -E "(compileSdk|targetSdk|buildTools)" platforms/android/project.properties || true
         
     - name: Compilar APK Debug
       run: |
@@ -92,4 +109,4 @@ jobs:
     - name: Resumen
       run: |
         echo "✅ Build completado!"
-        echo " APK disponible en Artifacts"
+        echo "📱 APK disponible en Artifacts"
