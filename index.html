@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0d1117">
+    <title>Calculadora Horas de Trabajo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <header class="header">
+            <h1 id="appTitle">🕐 Calculadora Horas de Trabajo</h1>
+            <button id="btnSettings" class="icon-btn" title="Configuración">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+            </button>
+        </header>
+
+        <main class="main-content">
+            <section class="upload-section card">
+                <h2 id="uploadTitle">📸 Subir Imágenes de Horarios</h2>
+                <p id="uploadSubtitle">Selecciona una o más imágenes de tu tabla de horarios</p>
+                
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="fileInput" accept="image/*" multiple>
+                    <div class="upload-placeholder">
+                        <span class="upload-icon">📁</span>
+                        <span id="uploadText">Toca para seleccionar imágenes</span>
+                    </div>
+                </div>
+
+                <div id="imageCounter" class="image-counter" style="display:none;"></div>
+
+                <div id="previewGallery" class="preview-gallery" style="display: none;">
+                    <h3 class="gallery-title" id="galleryTitle">📷 Imágenes Seleccionadas</h3>
+                    <div id="galleryContainer" class="gallery-container"></div>
+                    <div class="button-group">
+                        <button id="btnProcess" class="btn btn-primary" data-i18n="processImages">🔄 Procesar Imágenes</button>
+                        <button id="btnClear" class="btn btn-secondary" data-i18n="clearAll">🗑️ Limpiar Todo</button>
+                    </div>
+                </div>
+
+                <div id="loadingIndicator" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p id="loadingText">Procesando imágenes...<br><small>Esto puede tardar unos segundos</small></p>
+                </div>
+            </section>
+
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+            <section id="summarySection" class="summary-section card" style="display: none;">
+                <h2 id="summaryTitle">📊 Resumen del Mes</h2>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <span class="summary-label" data-i18n="registeredDays">Días registrados</span>
+                        <span class="summary-value" id="totalDays">0</span>
+                    </div>
+                    <div class="summary-item pending-item" id="pendingDaysItem">
+                        <span class="summary-label" data-i18n="pendingDays">Días pendientes</span>
+                        <span class="summary-value" id="pendingDays">0</span>
+                    </div>
+                    <div class="summary-item editable-item" id="workingDaysItem" title="Clic para editar">
+                        <span class="summary-label" data-i18n="workingDays">Días laborales ✏️</span>
+                        <span class="summary-value" id="workingDays">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label" data-i18n="weekendDays">Fines de semana</span>
+                        <span class="summary-value" id="weekendDays">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label" data-i18n="grossHours">Horas brutas</span>
+                        <span class="summary-value" id="totalGross">0.00h</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label" data-i18n="netHours">Horas netas</span>
+                        <span class="summary-value" id="totalNet">0.00h</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label" data-i18n="theoreticalHours">Horas teóricas</span>
+                        <span class="summary-value" id="theoreticalHours">0.00h</span>
+                    </div>
+                </div>
+                <div class="overtime-highlight" id="overtimeHighlight">
+                    <span class="overtime-label" id="overtimeLabel">HORAS EXTRAS</span>
+                    <span class="overtime-value" id="overtimeHours">0.00h</span>
+                </div>
+                <div class="recalculate-bar" id="recalculateBar" style="display:none;">
+                    <span class="recalculate-text" data-i18n="unsavedChanges">⚠️ Hay cambios sin aplicar</span>
+                    <button id="btnRecalculate" class="btn btn-primary btn-small" data-i18n="recalculate">🔄 Recalcular</button>
+                </div>
+            </section>
+
+            <section id="recordsSection" class="records-section" style="display: none;">
+                <div class="section-header">
+                    <h2 id="recordsTitle">📋 Registros del Mes</h2>
+                    <div class="header-actions">
+                        <span id="editModeIndicator" class="edit-mode-indicator" style="display:none;" data-i18n="editModeActive">✏️ Modo edición activo</span>
+                        <button id="btnClearRecords" class="btn btn-secondary btn-small" data-i18n="clearRecords">🗑️ Limpiar Registros</button>
+                    </div>
+                </div>
+                <div id="recordsList" class="records-list"></div>
+            </section>
+
+            <!-- Contenedor de logs de consola -->
+            <section id="consoleLogSection" class="console-log-section card" style="display: none;">
+                <div class="console-log-header">
+                    <h3> <span data-i18n="consoleLog">Log de Consola</span></h3>
+                    <div class="console-log-actions">
+                        <button id="btnClearConsole" class="btn btn-secondary btn-small" data-i18n="clearConsole">🗑️ Limpiar</button>
+                        <button id="btnToggleConsole" class="btn btn-secondary btn-small" data-i18n="minimize">▼</button>
+                    </div>
+                </div>
+                <div id="consoleLogContent" class="console-log-content"></div>
+            </section>
+        </main>
+
+        <div id="imageModal" class="image-modal" style="display: none;">
+            <div class="image-modal-content">
+                <button id="closeImageModal" class="close-image-modal">×</button>
+                <img id="modalImage" src="" alt="Vista ampliada">
+                <div id="modalCaption" class="modal-caption"></div>
+            </div>
+        </div>
+
+        <div id="settingsModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="settingsTitle">️ Configuración</h2>
+                    <button id="btnCloseSettings" class="close-btn">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="languageSelect" data-i18n="language">Idioma</label>
+                        <select id="languageSelect" class="form-select">
+                            <option value="es">🇸 Español</option>
+                            <option value="en">🇬 English</option>
+                            <option value="zh">🇨🇳 中文 (Chinese)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="signInTime" data-i18n="signInTime">Hora de entrada</label>
+                        <input type="time" id="signInTime" value="08:30">
+                    </div>
+                    <div class="form-group">
+                        <label for="signOutTime" data-i18n="signOutTime">Hora de salida</label>
+                        <input type="time" id="signOutTime" value="17:00">
+                    </div>
+                    <div class="form-group">
+                        <label for="dailyHours" data-i18n="dailyHours">Horas diarias requeridas</label>
+                        <input type="number" id="dailyHours" value="8" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="breakThreshold" data-i18n="breakThreshold">Umbral doble descanso (horas)</label>
+                        <input type="number" id="breakThreshold" value="9.5" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="firstBreak" data-i18n="firstBreak">Primer descanso (minutos)</label>
+                        <input type="number" id="firstBreak" value="30">
+                    </div>
+                    <div class="form-group">
+                        <label for="secondBreak" data-i18n="secondBreak">Segundo descanso (minutos)</label>
+                        <input type="number" id="secondBreak" value="30">
+                    </div>
+                    <div class="form-group">
+                        <label for="maxHours" data-i18n="maxHours">Umbral máximo de horas</label>
+                        <input type="number" id="maxHours" value="18" step="0.5" min="8" max="24">
+                        <small class="form-hint" data-i18n="maxHoursHint">Días con más horas se marcarán como "Jornada extendida"</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="minHours" data-i18n="minHours">Umbral mínimo de horas</label>
+                        <input type="number" id="minHours" value="0.5" step="0.1" min="0.1" max="2">
+                        <small class="form-hint" data-i18n="minHoursHint">Días con menos horas se marcarán como "Tiempo fuera de rango"</small>
+                    </div>
+                    <div class="form-group edit-mode-toggle">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="editModeToggle">
+                            <span class="toggle-text" data-i18n="editModeToggle">✏️ Modo edición de horarios</span>
+                        </label>
+                        <small class="form-hint" data-i18n="editModeHint">Activa el botón de editar en cada registro</small>
+                    </div>
+                    <div class="form-group edit-mode-toggle">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="showConsoleToggle">
+                            <span class="toggle-text" data-i18n="showConsoleToggle">📋 Mostrar log de consola</span>
+                        </label>
+                        <small class="form-hint" data-i18n="showConsoleHint">Muestra los mensajes de consola en la interfaz</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnSaveSettings" class="btn btn-primary" data-i18n="save">Guardar</button>
+                    <button id="btnCancelSettings" class="btn btn-secondary" data-i18n="cancel">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
