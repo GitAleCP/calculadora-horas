@@ -1,13 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.calculadora.horas" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Calculadora Horas</name>
-    <description>Calculadora de horas de trabajo</description>
-    <author email="tu@email.com" href="https://github.com">
+    <description>Calculadora de horas de trabajo con OCR</description>
+    <author email="dev@calculadora-horas.com" href="https://github.com">
         Tu Nombre
     </author>
     
+    <!-- Página de inicio -->
     <content src="index.html" />
     
+    <!-- Permisos de acceso -->
     <access origin="*" />
     <allow-navigation href="*" />
     <allow-intent href="http://*/*" />
@@ -17,25 +19,69 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     
+    <!-- Preferencias generales -->
     <preference name="Orientation" value="default" />
     <preference name="Fullscreen" value="false" />
-    <preference name="BackgroundColor" value="0xFF0d1117" />
+    <preference name="BackgroundColor" value="#0d1117" />
     <preference name="AutoHideSplashScreen" value="true" />
     <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="SplashScreenDelay" value="0" />
     <preference name="AndroidLaunchMode" value="singleTop" />
     <preference name="loadUrlTimeoutValue" value="60000" />
+    <preference name="AndroidWindowSoftInputMode" value="adjustResize" />
     
-    <!-- ✅ CAMBIO CLAVE: Actualizar versiones de SDK -->
+    <!-- ✅ CONFIGURACIÓN ANDROID CRÍTICA -->
+    <!-- Estas 3 líneas resuelven el error de compileSdk -->
     <platform name="android">
         <allow-intent href="market:*" />
+        
+        <!-- Versión mínima de Android soportada (Android 5.1) -->
         <preference name="android-minSdkVersion" value="22" />
+        
+        <!-- Versión objetivo (la que el usuario verá en Play Store) -->
         <preference name="android-targetSdkVersion" value="34" />
+        
+        <!-- Versión de compilación (DEBE ser >= 34 para AndroidX moderno) -->
         <preference name="android-compileSdkVersion" value="34" />
+        
+        <!-- Versión de Gradle (opcional, usa la más reciente) -->
+        <preference name="android-gradleVersion" value="8.2.1" />
+        
+        <!-- Arquitectura soportada -->
+        <preference name="android-buildToolsVersion" value="34.0.0" />
     </platform>
     
+    <!-- Configuración iOS (por si acaso) -->
     <platform name="ios">
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
+    
+    <!-- Iconos (opcional - puedes agregarlos después) -->
+    <!--
+    <icon src="res/icon.png" />
+    <platform name="android">
+        <icon density="ldpi" src="res/icon/android/icon-36-ldpi.png" />
+        <icon density="mdpi" src="res/icon/android/icon-48-mdpi.png" />
+        <icon density="hdpi" src="res/icon/android/icon-72-hdpi.png" />
+        <icon density="xhdpi" src="res/icon/android/icon-96-xhdpi.png" />
+        <icon density="xxhdpi" src="res/icon/android/icon-144-xxhdpi.png" />
+        <icon density="xxxhdpi" src="res/icon/android/icon-192-xxxhdpi.png" />
+    </platform>
+    -->
+    
+    <!-- Pantalla de inicio (opcional) -->
+    <!--
+    <splash src="res/screen.png" />
+    <platform name="android">
+        <splash density="land-hdpi" src="res/screen/android/splash-land-hdpi.png" />
+        <splash density="land-ldpi" src="res/screen/android/splash-land-ldpi.png" />
+        <splash density="land-mdpi" src="res/screen/android/splash-land-mdpi.png" />
+        <splash density="land-xhdpi" src="res/screen/android/splash-land-xhdpi.png" />
+        <splash density="port-hdpi" src="res/screen/android/splash-port-hdpi.png" />
+        <splash density="port-ldpi" src="res/screen/android/splash-port-ldpi.png" />
+        <splash density="port-mdpi" src="res/screen/android/splash-port-mdpi.png" />
+        <splash density="port-xhdpi" src="res/screen/android/splash-port-xhdpi.png" />
+    </platform>
+    -->
 </widget>
