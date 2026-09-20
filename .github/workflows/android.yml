@@ -1,0 +1,54 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Descargar código
+      uses: actions/checkout@v4
+      
+    - name: Instalar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Instalar Java
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Instalar Cordova
+      run: npm install -g cordova
+      
+    - name: Crear proyecto Cordova
+      run: |
+        cordova create myapp com.calculadora.horas "Calculadora Horas"
+        
+    - name: Copiar archivos de la app
+      run: |
+        cp index.html myapp/www/
+        cp styles.css myapp/www/
+        cp app.js myapp/www/
+        
+    - name: Agregar plataforma Android
+      run: |
+        cd myapp
+        cordova platform add android
+        
+    - name: Compilar APK
+      run: |
+        cd myapp
+        cordova build android
+        
+    - name: Subir APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: mi-apk
+        path: myapp/platforms/android/app/build/outputs/apk/debug/
