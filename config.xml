@@ -6,10 +6,8 @@
         Tu Nombre
     </author>
     
-    <!-- Página de inicio -->
     <content src="index.html" />
     
-    <!-- Permisos de acceso -->
     <access origin="*" />
     <allow-navigation href="*" />
     <allow-intent href="http://*/*" />
@@ -19,7 +17,6 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     
-    <!-- Preferencias generales -->
     <preference name="Orientation" value="default" />
     <preference name="Fullscreen" value="false" />
     <preference name="BackgroundColor" value="#0d1117" />
@@ -28,29 +25,24 @@
     <preference name="SplashScreenDelay" value="0" />
     <preference name="AndroidLaunchMode" value="singleTop" />
     <preference name="loadUrlTimeoutValue" value="60000" />
-    <preference name="AndroidWindowSoftInputMode" value="adjustResize" />
     
-    <!-- ✅ CONFIGURACIÓN ANDROID - SOLUCIÓN AL ERROR -->
+    <!-- ✅ CONFIGURACIÓN ANDROID CORREGIDA -->
     <platform name="android">
         <allow-intent href="market:*" />
         
-        <!-- Versión mínima de Android soportada (Android 5.1) -->
+        <!-- Versión mínima: Android 5.1 -->
         <preference name="android-minSdkVersion" value="22" />
         
-        <!-- Versión objetivo (la que el usuario verá en Play Store) -->
+        <!-- Versión objetivo: Android 14 -->
         <preference name="android-targetSdkVersion" value="34" />
         
-        <!-- ✅ Versión de compilación - DEBE ser 34 o superior -->
+        <!-- ✅ compileSdk DEBE ser 34 o superior -->
         <preference name="android-compileSdkVersion" value="34" />
         
-        <!-- Versión de Gradle -->
-        <preference name="android-gradleVersion" value="8.2.1" />
-        
-        <!-- Versión de Build Tools -->
-        <preference name="android-buildToolsVersion" value="34.0.0" />
+        <!--  ELIMINADO: android-buildToolsVersion -->
+        <!-- Cordova usará la versión por defecto (36.0.0) -->
     </platform>
     
-    <!-- Configuración iOS (por si acaso) -->
     <platform name="ios">
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
