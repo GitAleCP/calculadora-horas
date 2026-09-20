@@ -31,24 +31,62 @@ jobs:
       run: |
         cordova create myapp com.calculadora.horas "Calculadora Horas"
         
-    - name: Copiar archivos de la app
+    - name: Copiar archivos a www
       run: |
-        cp index.html myapp/www/
-        cp styles.css myapp/www/
-        cp app.js myapp/www/
+        # Limpiar www
+        rm -rf myapp/www/*
+        
+        # Copiar archivos
+        cp -v index.html myapp/www/
+        cp -v styles.css myapp/www/
+        cp -v app.js myapp/www/
+        
+        # Verificar
+        echo "=== Archivos en www ==="
+        ls -la myapp/www/
+        
+    - name: Copiar config.xml
+      run: |
+        cp -v config.xml myapp/
+        echo "=== config.xml copiado ==="
+        cat myapp/config.xml
         
     - name: Agregar plataforma Android
       run: |
         cd myapp
-        cordova platform add android
+        cordova platform add android@latest
         
-    - name: Compilar APK
+    - name: Preparar build
       run: |
         cd myapp
-        cordova build android
+        cordova prepare android
+        
+    - name: Instalar dependencias
+      run: |
+        cd myapp
+        npm install
+        
+    - name: Compilar APK Debug
+      run: |
+        cd myapp
+        echo "Iniciando compilación..."
+        cordova build android --debug
+        echo "Compilación completada"
+        
+    - name: Verificar APK generado
+      run: |
+        echo "=== Buscando APK ==="
+        find myapp -name "*.apk" -type f
+        ls -la myapp/platforms/android/app/build/outputs/apk/debug/
         
     - name: Subir APK
       uses: actions/upload-artifact@v4
       with:
-        name: mi-apk
+        name: calculadora-horas-apk
         path: myapp/platforms/android/app/build/outputs/apk/debug/
+        retention-days: 30
+        
+    - name: Resumen
+      run: |
+        echo "✅ Build completado!"
+        echo "📱 APK disponible en Artifacts"
