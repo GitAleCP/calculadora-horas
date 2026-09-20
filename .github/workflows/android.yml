@@ -27,10 +27,21 @@ jobs:
     - name: Instalar Cordova
       run: npm install -g cordova
       
-    - name: Instalar Android SDK 34
+    - name: Instalar Android SDK Platform 34
       run: |
-        echo "y" | sudo sdkmanager "platforms;android-34"
-        echo "y" | sudo sdkmanager "build-tools;34.0.0"
+        # Instalar sdkmanager si no existe
+        if [ ! -d "$ANDROID_HOME/cmdline-tools" ]; then
+          mkdir -p $ANDROID_HOME/cmdline-tools
+          cd $ANDROID_HOME/cmdline-tools
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+          unzip -q commandlinetools-linux-11076708_latest.zip
+          mv cmdline-tools latest
+          rm commandlinetools-linux-11076708_latest.zip
+        fi
+        
+        # Aceptar licencias e instalar SDK 34
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0"
         
     - name: Crear proyecto Cordova
       run: |
